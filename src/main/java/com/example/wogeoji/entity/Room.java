@@ -5,6 +5,9 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.util.HashSet;
+import java.util.Set;
+
 @Entity
 @Getter
 @Setter
@@ -27,4 +30,12 @@ public class Room {
     private String description;
 
     private Integer capacity;
+
+    @ManyToMany
+    @JoinTable(
+            name = "user_room",
+            joinColumns = @JoinColumn(name = "room_no"),
+            inverseJoinColumns = @JoinColumn(name = "user_no")
+    )
+    private Set<User> participants = new HashSet<>();
 }
