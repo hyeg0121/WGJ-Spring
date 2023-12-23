@@ -30,6 +30,5 @@ public class User {
     @Column(unique = true)
     private String email;
 
-    @ColumnDefault("'아직 상태메세지가 없습니다.'")
     private String bio;
 }
