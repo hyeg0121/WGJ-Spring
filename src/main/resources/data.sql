@@ -9,7 +9,6 @@ VALUES ('커피 아끼기', 1, '커피를 덜 마셔서 거지를 탈출하자',
        ('야빠 거지방', 2, '거지 두산베이스 방', 15);
 
 -- 그룹 있는 게시글
-INSERT INTO posts (amount, item, content, author_no, room_no)
-VALUES (4500, '아메리카노', '죄송합니다. 제가 스벅충이라 ㅋㅋ', 1, 1),
-       (16000, '닭강정 & 맥주', '야구장에서 치맥 어떻게 참나요? 오늘 졌으니까 좀 봐주셈', 2, 2)
-;
+INSERT INTO posts (amount, item, content, author_no, room_no, created_at)
+VALUES (4500, '아메리카노', '죄송합니다. 제가 스벅충이라 ㅋㅋ', 1, 1, now()),
+       (16000, '닭강정 & 맥주', '야구장에서 치맥 어떻게 참나요? 오늘 졌으니까 좀 봐주셈', 2, 2, now());
