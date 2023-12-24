@@ -1,0 +1,2 @@
+INSERT INTO users (name, id, password, email, bio) VALUES ('황혜경', 'hye_123', 'password123', 'hye@example.com', '안녕!');
+INSERT INTO users (name, id, password, email, bio) VALUES ('손아섭', 'son_123', 'password123', 'son@example.com', '야구가 좋아!');
