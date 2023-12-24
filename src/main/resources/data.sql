@@ -1,7 +1,7 @@
 -- 유저
-INSERT INTO users (name, id, password, email, bio)
-VALUES ('황혜경', 'hye_123', 'password123', 'hye@example.com', '안녕!'),
-       ('손아섭', 'son_123', 'password123', 'son@example.com', '야구가 좋아!');
+INSERT INTO users (name, id, password, email, bio, join_date)
+VALUES ('황혜경', 'hye_123', 'password123', 'hye@example.com', '안녕!', now()),
+       ('손아섭', 'son_123', 'password123', 'son@example.com', '야구가 좋아!', now());
 
 -- 거지방
 INSERT INTO rooms (name, creator_no, description, capacity)
