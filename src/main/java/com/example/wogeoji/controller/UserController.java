@@ -43,7 +43,7 @@ public class UserController {
         return new ResponseEntity<>(createdUser, HttpStatus.CREATED);
     }
 
-    // 유저 생성
+    // 유저 업데이트
     @PutMapping("/{userNo}")
     public ResponseEntity<User> updateUser(@PathVariable Long userNo, @RequestBody User updatedUser) {
         User updatedUserData = userService.updateUser(userNo, updatedUser);
