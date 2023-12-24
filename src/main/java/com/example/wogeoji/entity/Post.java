@@ -30,4 +30,8 @@ public class Post{
     @JoinColumn(name = "author_no", nullable = false)
     private User author;
 
+    @ManyToOne
+    @JoinColumn(name = "room_no")
+    private Room room;
+
 }
