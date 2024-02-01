@@ -13,7 +13,6 @@ import java.time.LocalDateTime;
 @Getter
 @Setter
 @NoArgsConstructor
-@Table(name = "posts")
 @EntityListeners(AuditingEntityListener.class)
 public class Post{
 
