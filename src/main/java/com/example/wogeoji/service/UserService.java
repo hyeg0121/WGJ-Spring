@@ -24,8 +24,8 @@ public class UserService {
     }
 
     // pk로 유저 조회
-    public Optional<User> findUserByNo(Long no) {
-        return userRepository.findById(no);
+    public Optional<User> findUserById(Long Id) {
+        return userRepository.findById(Id);
     }
 
     // 유저 생성
@@ -34,8 +34,8 @@ public class UserService {
     }
 
     // 유저 업데이트
-    public User updateUser(Long userNo, User updateUser) {
-        Optional<User> existingUserOptional = userRepository.findById(userNo);
+    public User updateUser(Long userId, User updateUser) {
+        Optional<User> existingUserOptional = userRepository.findById(userId);
 
         if (existingUserOptional.isPresent()) {
             User existingUser = existingUserOptional.get();
@@ -50,7 +50,7 @@ public class UserService {
     }
 
     // 유저 삭제
-    public void deleteUser(Long userNo) {
-        userRepository.deleteById(userNo);
+    public void deleteUser(Long userId) {
+        userRepository.deleteById(userId);
     }
 }

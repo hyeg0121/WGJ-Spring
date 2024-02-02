@@ -27,9 +27,9 @@ public class PostController {
     }
 
     // pk로 거지방 조회
-    @GetMapping("/{postNo}")
-    public ResponseEntity<Post> getpostByNo(@PathVariable Long postNo) {
-        Optional<Post> post = postService.findPostByNo(postNo);
+    @GetMapping("/{postId}")
+    public ResponseEntity<Post> getpostById(@PathVariable Long postId) {
+        Optional<Post> post = postService.findPostById(postId);
         return post.map(value -> new ResponseEntity<>(value, HttpStatus.OK))
                 .orElseGet(() -> new ResponseEntity<>(HttpStatus.NOT_FOUND));
 
@@ -43,9 +43,9 @@ public class PostController {
     }
 
     // 거지방 업데이트
-    @PutMapping("/{postNo}")
-    public ResponseEntity<Post> updatepost(@PathVariable Long postNo, @RequestBody Post updatedPost) {
-        Post updatedPostData = postService.updatePost(postNo, updatedPost);
+    @PutMapping("/{postId}")
+    public ResponseEntity<Post> updatepost(@PathVariable Long postId, @RequestBody Post updatedPost) {
+        Post updatedPostData = postService.updatePost(postId, updatedPost);
         if (updatedPostData != null) {
             return new ResponseEntity<>(updatedPostData, HttpStatus.OK);
         }
@@ -54,9 +54,9 @@ public class PostController {
     }
 
     // 거지방 삭제
-    @DeleteMapping("/{postNo}")
-    public ResponseEntity<Void> deletepost(@PathVariable Long postNo) {
-        postService.deletePost(postNo);
+    @DeleteMapping("/{postId}")
+    public ResponseEntity<Void> deletepost(@PathVariable Long postId) {
+        postService.deletePost(postId);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 }

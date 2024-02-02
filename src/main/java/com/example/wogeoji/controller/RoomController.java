@@ -27,9 +27,9 @@ public class RoomController {
     }
 
     // pk로 거지방 조회
-    @GetMapping("/{roomNo}")
-    public ResponseEntity<Room> getRoomByNo(@PathVariable Long roomNo) {
-        Optional<Room> room = roomService.findRoomByNo(roomNo);
+    @GetMapping("/{roomId}")
+    public ResponseEntity<Room> getRoomById(@PathVariable Long roomId) {
+        Optional<Room> room = roomService.findRoomById(roomId);
         return room.map(value -> new ResponseEntity<>(value, HttpStatus.OK))
                 .orElseGet(() -> new ResponseEntity<>(HttpStatus.NOT_FOUND));
 
@@ -43,9 +43,9 @@ public class RoomController {
     }
 
     // 거지방 업데이트
-    @PutMapping("/{roomNo}")
-    public ResponseEntity<Room> updateRoom(@PathVariable Long roomNo, @RequestBody Room updatedRoom) {
-        Room updatedRoomData = roomService.updateRoom(roomNo, updatedRoom);
+    @PutMapping("/{roomId}")
+    public ResponseEntity<Room> updateRoom(@PathVariable Long roomId, @RequestBody Room updatedRoom) {
+        Room updatedRoomData = roomService.updateRoom(roomId, updatedRoom);
         if (updatedRoomData != null) {
             return new ResponseEntity<>(updatedRoomData, HttpStatus.OK);
         }
@@ -54,9 +54,9 @@ public class RoomController {
     }
 
     // 거지방 삭제
-    @DeleteMapping("/{roomNo}")
-    public ResponseEntity<Void> deleteRoom(@PathVariable Long roomNo) {
-        roomService.deleteRoom(roomNo);
+    @DeleteMapping("/{roomId}")
+    public ResponseEntity<Void> deleteRoom(@PathVariable Long roomId) {
+        roomService.deleteRoom(roomId);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 }

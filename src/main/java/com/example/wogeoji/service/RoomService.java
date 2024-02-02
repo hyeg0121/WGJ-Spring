@@ -24,8 +24,8 @@ public class RoomService {
     }
 
     // pk로 거지방 조회
-    public Optional<Room> findRoomByNo(Long roomNo) {
-        return roomRepository.findById(roomNo);
+    public Optional<Room> findRoomById(Long roomId) {
+        return roomRepository.findById(roomId);
     }
 
     // 거지방 생성
@@ -34,8 +34,8 @@ public class RoomService {
     }
 
     // 거지방 업데이트
-    public Room updateRoom(Long roomNo, Room updatedRoom) {
-        Room existingRoom = roomRepository.findById(roomNo).orElse(null);
+    public Room updateRoom(Long roomId, Room updatedRoom) {
+        Room existingRoom = roomRepository.findById(roomId).orElse(null);
 
         if (existingRoom != null) {
             existingRoom.setName(updatedRoom.getName());
@@ -49,7 +49,7 @@ public class RoomService {
         return null;
     }
 
-    public void deleteRoom(Long roomNo) {
-        roomRepository.deleteById(roomNo);
+    public void deleteRoom(Long roomId) {
+        roomRepository.deleteById(roomId);
     }
 }

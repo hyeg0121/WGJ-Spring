@@ -28,9 +28,9 @@ public class UserController {
     }
 
     // Pk로 유저 조회
-    @GetMapping("/{userNo}")
-    public ResponseEntity<User> getUserByNo(@PathVariable Long userNo) {
-        Optional<User> user = userService.findUserByNo(userNo);
+    @GetMapping("/{userId}")
+    public ResponseEntity<User> getUserById(@PathVariable Long userId) {
+        Optional<User> user = userService.findUserById(userId);
         return user.map(value -> new ResponseEntity<>(value, HttpStatus.OK))
                 .orElseGet(() -> new ResponseEntity<>(HttpStatus.NOT_FOUND));
 
@@ -44,9 +44,9 @@ public class UserController {
     }
 
     // 유저 업데이트
-    @PutMapping("/{userNo}")
-    public ResponseEntity<User> updateUser(@PathVariable Long userNo, @RequestBody User updatedUser) {
-        User updatedUserData = userService.updateUser(userNo, updatedUser);
+    @PutMapping("/{userId}")
+    public ResponseEntity<User> updateUser(@PathVariable Long userId, @RequestBody User updatedUser) {
+        User updatedUserData = userService.updateUser(userId, updatedUser);
         if (updatedUserData != null) {
             return new ResponseEntity<>(updatedUserData, HttpStatus.OK);
         }
@@ -55,9 +55,9 @@ public class UserController {
     }
 
     // 유저 삭제
-    @DeleteMapping("/{userNo}")
-    public ResponseEntity<Void> deleteUser(@PathVariable Long userNo) {
-        userService.deleteUser(userNo);
+    @DeleteMapping("/{userId}")
+    public ResponseEntity<Void> deleteUser(@PathVariable Long userId) {
+        userService.deleteUser(userId);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 }

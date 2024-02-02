@@ -24,8 +24,8 @@ public class PostService {
     }
 
     // pk로 게시글 조회
-    public Optional<Post> findPostByNo(Long postNo) {
-        return postRepository.findById(postNo);
+    public Optional<Post> findPostById(Long postId) {
+        return postRepository.findById(postId);
     }
 
     // 게시글 추가
@@ -34,8 +34,8 @@ public class PostService {
     }
 
     // 게시글 업데이트
-    public Post updatePost(Long postNo, Post updatedPost) {
-        Post existingPost = postRepository.findById(postNo).orElse(null);
+    public Post updatePost(Long postId, Post updatedPost) {
+        Post existingPost = postRepository.findById(postId).orElse(null);
 
         if (existingPost != null) {
             existingPost.setAmount(updatedPost.getAmount());
@@ -47,7 +47,7 @@ public class PostService {
         return null;
     }
 
-    public void deletePost(Long postNo) {
-        postRepository.deleteById(postNo);
+    public void deletePost(Long postId) {
+        postRepository.deleteById(postId);
     }
 }
