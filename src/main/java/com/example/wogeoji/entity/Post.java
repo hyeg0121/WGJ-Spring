@@ -5,6 +5,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.springframework.data.annotation.CreatedDate;
+import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import java.time.LocalDateTime;
@@ -18,8 +19,7 @@ public class Post{
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "post_no", updatable = false)
-    private Long no;
+    private Long id;
 
     @Column(nullable = false)
     private Integer amount;
@@ -31,15 +31,22 @@ public class Post{
     private String content;
 
     @ManyToOne
-    @JoinColumn(name = "author_no", nullable = false)
+    @JoinColumn(name = "author_id", nullable = false)
     private User author;
 
     @ManyToOne
-    @JoinColumn(name = "room_no")
+    @JoinColumn(name = "room_id")
     private Room room;
 
+
+    private Integer isDeleted;
+
     @CreatedDate
-    @Column(name = "created_at")
     private LocalDateTime createdAt;
+
+
+    @LastModifiedDate
+    private LocalDateTime updatedAt;
+
 
 }

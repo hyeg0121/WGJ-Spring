@@ -3,6 +3,7 @@ package com.example.wogeoji.entity;
 import jakarta.persistence.*;
 import lombok.*;
 import org.springframework.data.annotation.CreatedDate;
+import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import java.time.LocalDateTime;
@@ -16,29 +17,31 @@ import java.time.LocalDateTime;
 public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "user_no", updatable = false)
-    private Long no;
+    private Long id;
 
     @Column(nullable = false)
     private String name;
 
     @Column(unique = true)
-    private String id;
+    private String email;
 
     @Column(nullable = false)
     private String password;
 
-    @Column(unique = true)
-    private String email;
-
     private String bio;
 
-    @Column(name = "spent_amount")
+    private String profileImagePath;
+
     private Integer spentAmount;
 
+    private Integer isDeleted;
+
     @CreatedDate
-    @Column(name = "join_date")
-    private LocalDateTime joinDate;
+    private LocalDateTime createdAt;
+
+
+    @LastModifiedDate
+    private LocalDateTime updatedAt;
 
 
 }
