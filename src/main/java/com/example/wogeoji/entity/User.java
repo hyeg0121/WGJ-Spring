@@ -28,13 +28,13 @@ public class User {
     @Column(nullable = false)
     private String password;
 
-    private String bio;
+    private String bio = "아직 목표가 없습니다.";
 
     private String profileImagePath;
 
-    private Integer spentAmount;
+    private Integer spentAmount = 0;
 
-    private Integer isDeleted;
+    private Integer isDeleted = 0;
 
     @CreatedDate
     private LocalDateTime createdAt;
