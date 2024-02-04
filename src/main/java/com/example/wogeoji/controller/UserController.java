@@ -2,6 +2,7 @@ package com.example.wogeoji.controller;
 
 import com.example.wogeoji.entity.User;
 import com.example.wogeoji.service.UserService;
+import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -41,6 +42,14 @@ public class UserController {
     public ResponseEntity<User> addUser(@RequestBody User user) {
         User createdUser = userService.addUser(user);
         return new ResponseEntity<>(createdUser, HttpStatus.CREATED);
+    }
+
+    // 유저 로그인
+    @PostMapping("/login")
+    public ResponseEntity<User> login(@RequestBody User user) {
+        User loggedUser = userService.login(user);
+        if (loggedUser != null) return new ResponseEntity<>(loggedUser, HttpStatus.OK);
+        else return new ResponseEntity<>(HttpStatus.NOT_FOUND);
     }
 
     // 유저 업데이트
