@@ -9,15 +9,13 @@ import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import java.time.LocalDateTime;
-import java.util.HashSet;
-import java.util.Set;
 
 @Entity
 @Getter
 @Setter
 @NoArgsConstructor
 @EntityListeners(AuditingEntityListener.class)
-public class Room {
+public class Room extends BaseEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -36,13 +34,4 @@ public class Room {
 
     @Column(name = "icon_image_path")
     private String iconImagePath;
-
-    private Integer isDeleted;
-
-    @CreatedDate
-    private LocalDateTime createdAt;
-
-
-    @LastModifiedDate
-    private LocalDateTime updatedAt;
 }

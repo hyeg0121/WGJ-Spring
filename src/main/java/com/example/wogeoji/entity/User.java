@@ -2,19 +2,14 @@ package com.example.wogeoji.entity;
 
 import jakarta.persistence.*;
 import lombok.*;
-import org.springframework.data.annotation.CreatedDate;
-import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
-
-import java.time.LocalDateTime;
-
 
 @Entity
 @Getter
 @Setter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @EntityListeners(AuditingEntityListener.class)
-public class User {
+public class User extends BaseEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -33,15 +28,4 @@ public class User {
     private String profileImagePath;
 
     private Integer spentAmount = 0;
-
-    private Integer isDeleted = 0;
-
-    @CreatedDate
-    private LocalDateTime createdAt;
-
-
-    @LastModifiedDate
-    private LocalDateTime updatedAt;
-
-
 }
