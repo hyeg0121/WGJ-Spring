@@ -1,8 +1,8 @@
 package com.example.wogeoji.service;
 
 import com.example.wogeoji.entity.User;
+import com.example.wogeoji.exception.user.DuplicateEmailException;
 import com.example.wogeoji.repository.UserRepository;
-import jakarta.servlet.http.HttpSession;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCrypt;
@@ -37,6 +37,10 @@ public class UserService {
     // 유저 생성
     @Transactional
     public User addUser(User user) {
+        // 이메일 중복 체크
+        if (userRepository.existsByEmail(user.getEmail())) throw DuplicateEmailException.EXCEPTION;
+
+
         // 비밀번호 해시
         String password = user.getPassword();
         String encodedPassword = encoder.encode(password);
@@ -45,10 +49,12 @@ public class UserService {
         return userRepository.save(user);
     }
 
+
     // 유저 로그인
     public User login(User user) {
         boolean isValid = false;
         User loggedUser = userRepository.findByEmail(user.getEmail());
+
         if (loggedUser != null) {
             isValid = BCrypt.checkpw(user.getPassword(), loggedUser.getPassword());
         }
@@ -59,6 +65,7 @@ public class UserService {
 
         return null;
     }
+
 
     // 유저 업데이트
     public User updateUser(Long userId, User updateUser) {
