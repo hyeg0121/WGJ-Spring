@@ -25,7 +25,7 @@ public class User extends BaseEntity {
 
     private String bio = "아직 목표가 없습니다.";
 
-    private String profileImagePath;
+    private String profileImagePath = "/images/profile.png";
 
     private Integer spentAmount = 0;
 }
