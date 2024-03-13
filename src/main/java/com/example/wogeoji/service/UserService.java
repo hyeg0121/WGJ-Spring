@@ -1,8 +1,8 @@
 package com.example.wogeoji.service;
 
-import com.example.wogeoji.dto.user.AddUserDto;
 import com.example.wogeoji.entity.User;
 import com.example.wogeoji.exception.user.DuplicateEmailException;
+import com.example.wogeoji.exception.user.EmailNotFoundException;
 import com.example.wogeoji.exception.user.IncorrectPasswordException;
 import com.example.wogeoji.repository.UserRepository;
 import jakarta.transaction.Transactional;
@@ -42,7 +42,6 @@ public class UserService {
         // 이메일 중복 체크
         if (userRepository.existsByEmail(user.getEmail())) throw DuplicateEmailException.EXCEPTION;
 
-
         // 비밀번호 해시
         String password = user.getPassword();
         String encodedPassword = encoder.encode(password);
@@ -53,19 +52,16 @@ public class UserService {
 
 
     // 유저 로그인
-    public User login(AddUserDto user) {
+    public User login(User user) {
         boolean isValid = false;
         User loggedUser = userRepository.findByEmail(user.getEmail());
 
-        if (loggedUser != null) {
-            isValid = BCrypt.checkpw(user.getPassword(), loggedUser.getPassword());
-        }
+        if (loggedUser != null) isValid = BCrypt.checkpw(user.getPassword(), loggedUser.getPassword());
+        else throw EmailNotFoundException.EXCEPTION;
 
-        if (isValid) {
-            return loggedUser;
-        } else {
-            throw  IncorrectPasswordException.EXCEPTION;
-        }
+
+        if (isValid) return loggedUser;
+        else throw IncorrectPasswordException.EXCEPTION;
     }
 
 
