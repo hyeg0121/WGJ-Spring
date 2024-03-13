@@ -1,7 +1,9 @@
 package com.example.wogeoji.service;
 
+import com.example.wogeoji.dto.user.AddUserDto;
 import com.example.wogeoji.entity.User;
 import com.example.wogeoji.exception.user.DuplicateEmailException;
+import com.example.wogeoji.exception.user.IncorrectPasswordException;
 import com.example.wogeoji.repository.UserRepository;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -51,7 +53,7 @@ public class UserService {
 
 
     // 유저 로그인
-    public User login(User user) {
+    public User login(AddUserDto user) {
         boolean isValid = false;
         User loggedUser = userRepository.findByEmail(user.getEmail());
 
@@ -61,9 +63,9 @@ public class UserService {
 
         if (isValid) {
             return loggedUser;
+        } else {
+            throw  IncorrectPasswordException.EXCEPTION;
         }
-
-        return null;
     }
 
 
