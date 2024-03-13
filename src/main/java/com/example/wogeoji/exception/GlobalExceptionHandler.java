@@ -1,6 +1,7 @@
 package com.example.wogeoji.exception;
 
 import com.example.wogeoji.exception.user.DuplicateEmailException;
+import com.example.wogeoji.exception.user.EmailNotFoundException;
 import com.example.wogeoji.exception.user.IncorrectPasswordException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -21,5 +22,10 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(IncorrectPasswordException.class)
     public ResponseEntity<ErrorResponse> handleIncorrectPasswordException(IncorrectPasswordException e) {
         return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(ErrorResponse.of(ErrorCode.INCORRECT_PASSWORD));
+    }
+
+    @ExceptionHandler(EmailNotFoundException.class)
+    public ResponseEntity<ErrorResponse> handleEmailNotFoundException(EmailNotFoundException e) {
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(ErrorResponse.of(ErrorCode.EMAIL_NOT_FOUND));
     }
 }
