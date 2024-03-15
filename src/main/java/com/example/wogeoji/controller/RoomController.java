@@ -1,5 +1,6 @@
 package com.example.wogeoji.controller;
 
+import com.example.wogeoji.dto.room.AddRoomDto;
 import com.example.wogeoji.entity.Room;
 import com.example.wogeoji.service.RoomService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -37,26 +38,8 @@ public class RoomController {
 
     // 거지방 추가
     @PostMapping
-    public ResponseEntity<Room> addRoom(@RequestBody Room room) {
-        Room createdRoom = roomService.addRoom(room);
+    public ResponseEntity<Room> addRoom(@RequestBody AddRoomDto addRoomDto) {
+        Room createdRoom = roomService.addRoom(addRoomDto);
         return new ResponseEntity<>(createdRoom, HttpStatus.CREATED);
-    }
-
-    // 거지방 업데이트
-    @PutMapping("/{roomId}")
-    public ResponseEntity<Room> updateRoom(@PathVariable Long roomId, @RequestBody Room updatedRoom) {
-        Room updatedRoomData = roomService.updateRoom(roomId, updatedRoom);
-        if (updatedRoomData != null) {
-            return new ResponseEntity<>(updatedRoomData, HttpStatus.OK);
-        }
-
-        return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-    }
-
-    // 거지방 삭제
-    @DeleteMapping("/{roomId}")
-    public ResponseEntity<Void> deleteRoom(@PathVariable Long roomId) {
-        roomService.deleteRoom(roomId);
-        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 }
