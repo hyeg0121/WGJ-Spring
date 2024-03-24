@@ -20,7 +20,7 @@ public class Room extends BaseEntity {
     @Column(nullable = false)
     private String name;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne()
     @JoinColumn(name = "creator_id", nullable = false)
     private User creator;
 
