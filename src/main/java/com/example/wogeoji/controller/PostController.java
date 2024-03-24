@@ -1,5 +1,6 @@
 package com.example.wogeoji.controller;
 
+import com.example.wogeoji.dto.post.AddPostDto;
 import com.example.wogeoji.entity.Post;
 import com.example.wogeoji.service.PostService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -37,26 +38,8 @@ public class PostController {
 
     // 거지방 추가
     @PostMapping
-    public ResponseEntity<Post> addpost(@RequestBody Post post) {
-        Post createdpost = postService.addPost(post);
+    public ResponseEntity<Post> addpost(@RequestBody AddPostDto addPostDto) {
+        Post createdpost = postService.addPost(addPostDto);
         return new ResponseEntity<>(createdpost, HttpStatus.CREATED);
-    }
-
-    // 거지방 업데이트
-    @PutMapping("/{postId}")
-    public ResponseEntity<Post> updatepost(@PathVariable Long postId, @RequestBody Post updatedPost) {
-        Post updatedPostData = postService.updatePost(postId, updatedPost);
-        if (updatedPostData != null) {
-            return new ResponseEntity<>(updatedPostData, HttpStatus.OK);
-        }
-
-        return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-    }
-
-    // 거지방 삭제
-    @DeleteMapping("/{postId}")
-    public ResponseEntity<Void> deletepost(@PathVariable Long postId) {
-        postService.deletePost(postId);
-        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 }
