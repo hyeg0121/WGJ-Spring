@@ -1,8 +1,12 @@
 package com.example.wogeoji.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.*;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Getter
@@ -28,4 +32,7 @@ public class User extends BaseEntity {
     private String profileImagePath = "/images/profile.png";
 
     private Integer spentAmount = 0;
+
+    @OneToMany(mappedBy = "author")
+    private List<Post> posts = new ArrayList<>();
 }
