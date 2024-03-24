@@ -49,24 +49,4 @@ public class RoomService {
 
         return roomRepository.save(newRoom);
     }
-
-    // 거지방 업데이트
-    public Room updateRoom(Long roomId, Room updatedRoom) {
-        Room existingRoom = roomRepository.findById(roomId).orElse(null);
-
-        if (existingRoom != null) {
-            existingRoom.setName(updatedRoom.getName());
-            existingRoom.setDescription(updatedRoom.getDescription());
-            existingRoom.setCapacity(updatedRoom.getCapacity());
-
-
-            return roomRepository.save(existingRoom);
-        }
-
-        return null;
-    }
-
-    public void deleteRoom(Long roomId) {
-        roomRepository.deleteById(roomId);
-    }
 }
