@@ -1,15 +1,16 @@
 package com.example.wogeoji.controller;
 
+import com.example.wogeoji.dto.user.LoginUserDto;
+import com.example.wogeoji.dto.user.UserResponseDto;
+import com.example.wogeoji.entity.Post;
 import com.example.wogeoji.entity.User;
 import com.example.wogeoji.service.UserService;
-import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.Optional;
 
 @RestController
 @RequestMapping("/api/users")
@@ -24,49 +25,33 @@ public class UserController {
 
     // 모든 유저 조회
     @GetMapping
-    public List<User> getAllUsers() {
-        return userService.findAllUser();
+    public ResponseEntity<List<UserResponseDto>> getAllUsers() {
+        return ResponseEntity.status(HttpStatus.OK).body(userService.findAllUser());
     }
 
     // Pk로 유저 조회
     @GetMapping("/{userId}")
-    public ResponseEntity<User> getUserById(@PathVariable Long userId) {
-        Optional<User> user = userService.findUserById(userId);
-        return user.map(value -> new ResponseEntity<>(value, HttpStatus.OK))
-                .orElseGet(() -> new ResponseEntity<>(HttpStatus.NOT_FOUND));
-
+    public ResponseEntity<UserResponseDto> getUserById(@PathVariable Long userId) {
+        return ResponseEntity.status(HttpStatus.OK).body(userService.findUserById(userId));
     }
 
     // 유저 추가
     @PostMapping
-    public ResponseEntity<User> addUser(@RequestBody User user) {
-        User createdUser = userService.addUser(user);
-        return new ResponseEntity<>(createdUser, HttpStatus.CREATED);
+    public ResponseEntity<UserResponseDto> addUser(@RequestBody User user) {
+        return ResponseEntity.status(HttpStatus.CREATED)
+                .body(userService.addUser(user));
     }
 
     // 유저 로그인
     @PostMapping("/login")
-    public ResponseEntity<User> login(@RequestBody User user) {
-        User loggedUser = userService.login(user);
-        if (loggedUser != null) return new ResponseEntity<>(loggedUser, HttpStatus.OK);
-        else return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+    public ResponseEntity<User> login(@RequestBody LoginUserDto loginUserDto) {
+        return ResponseEntity.status(HttpStatus.OK)
+                .body(userService.login(loginUserDto));
     }
 
-    // 유저 업데이트
-    @PutMapping("/{userId}")
-    public ResponseEntity<User> updateUser(@PathVariable Long userId, @RequestBody User updatedUser) {
-        User updatedUserData = userService.updateUser(userId, updatedUser);
-        if (updatedUserData != null) {
-            return new ResponseEntity<>(updatedUserData, HttpStatus.OK);
-        }
-
-        return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-    }
-
-    // 유저 삭제
-    @DeleteMapping("/{userId}")
-    public ResponseEntity<Void> deleteUser(@PathVariable Long userId) {
-        userService.deleteUser(userId);
-        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+    // 유저가 작성한 글 조회
+    @GetMapping("/{userId}/posts")
+    public List<Post> getUsersPosts(@PathVariable Long userId) {
+        return userService.getUserPosts(userId);
     }
 }

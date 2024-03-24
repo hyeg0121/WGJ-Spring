@@ -1,20 +1,26 @@
 package com.example.wogeoji.service;
 
+import com.example.wogeoji.dto.user.LoginUserDto;
+import com.example.wogeoji.dto.user.UserResponseDto;
+import com.example.wogeoji.entity.Post;
 import com.example.wogeoji.entity.User;
-import com.example.wogeoji.exception.user.DuplicateEmailException;
-import com.example.wogeoji.exception.user.EmailNotFoundException;
-import com.example.wogeoji.exception.user.IncorrectPasswordException;
+import com.example.wogeoji.exception.DuplicateEmailException;
+import com.example.wogeoji.exception.EmailNotFoundException;
+import com.example.wogeoji.exception.IncorrectPasswordException;
+import com.example.wogeoji.exception.UserNotFoundException;
 import com.example.wogeoji.repository.UserRepository;
-import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCrypt;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
+@Transactional
 public class UserService {
 
     private final UserRepository userRepository;
@@ -27,36 +33,40 @@ public class UserService {
     }
 
     // 모든 유저 조회
-    public List<User> findAllUser() {
-        return userRepository.findAll();
+    public List<UserResponseDto> findAllUser() {
+        return userRepository.findAll()
+                .stream()
+                .map(UserResponseDto::from)
+                .collect(Collectors.toList());
     }
 
     // pk로 유저 조회
-    public Optional<User> findUserById(Long Id) {
-        return userRepository.findById(Id);
+    public UserResponseDto findUserById(Long userId) {
+        User user = userRepository.findById(userId)
+                .orElseThrow(() -> UserNotFoundException.EXCEPTION);
+
+        return UserResponseDto.from(user);
     }
 
     // 유저 생성
-    @Transactional
-    public User addUser(User user) {
+    public UserResponseDto addUser(User user) {
         // 이메일 중복 체크
         if (userRepository.existsByEmail(user.getEmail())) throw DuplicateEmailException.EXCEPTION;
 
-        // 비밀번호 해시
+        // 비밀번호 해싱
         String password = user.getPassword();
         String encodedPassword = encoder.encode(password);
         user.setPassword(encodedPassword);
 
-        return userRepository.save(user);
+        return UserResponseDto.from(userRepository.save(user));
     }
 
-
     // 유저 로그인
-    public User login(User user) {
+    public User login(LoginUserDto loginUserDto) {
         boolean isValid = false;
-        User loggedUser = userRepository.findByEmail(user.getEmail());
+        User loggedUser = userRepository.findByEmail(loginUserDto.getEmail());
 
-        if (loggedUser != null) isValid = BCrypt.checkpw(user.getPassword(), loggedUser.getPassword());
+        if (loggedUser != null) isValid = BCrypt.checkpw(loginUserDto.getPassword(), loggedUser.getPassword());
         else throw EmailNotFoundException.EXCEPTION;
 
 
@@ -64,25 +74,13 @@ public class UserService {
         else throw IncorrectPasswordException.EXCEPTION;
     }
 
+    // 유저의 posts 조회
+    public List<Post> getUserPosts(Long userId) {
+        User user = userRepository.findById(userId)
+                .orElseThrow(() -> UserNotFoundException.EXCEPTION);
 
-    // 유저 업데이트
-    public User updateUser(Long userId, User updateUser) {
-        Optional<User> existingUserOptional = userRepository.findById(userId);
 
-        if (existingUserOptional.isPresent()) {
-            User existingUser = existingUserOptional.get();
-            existingUser.setName(updateUser.getName());
-            existingUser.setBio(updateUser.getBio());
-            existingUser.setPassword(updateUser.getPassword());
-
-            return userRepository.save(existingUser);
-        }
-
-        return null;
+        return user.getPosts();
     }
 
-    // 유저 삭제
-    public void deleteUser(Long userId) {
-        userRepository.deleteById(userId);
-    }
 }
