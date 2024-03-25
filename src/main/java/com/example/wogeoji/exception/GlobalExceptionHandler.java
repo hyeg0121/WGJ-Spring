@@ -35,4 +35,9 @@ public class GlobalExceptionHandler {
     public ResponseEntity<ErrorResponse> handleRoomNotFoundException(RoomNotFoundException e) {
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body(ErrorResponse.of(ErrorCode.ROOM_NOT_FOUND));
     }
+
+    @ExceptionHandler(PostNotFoundException.class)
+    public ResponseEntity<ErrorResponse> handlePostNotFoundException(PostNotFoundException e) {
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(ErrorResponse.of(ErrorCode.POST_NOT_FOUND));
+    }
 }

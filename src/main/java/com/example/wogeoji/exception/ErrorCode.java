@@ -12,7 +12,8 @@ public enum ErrorCode {
     INCORRECT_PASSWORD(HttpStatus.UNAUTHORIZED, "비밀번호가 알맞지 않습니다."),
     EMAIL_NOT_FOUND(HttpStatus.NOT_FOUND, "가입되지 않은 이메일입니다."),
     USER_NOT_FOUND(HttpStatus.NOT_FOUND, "유저가 존재하지 않습니다."),
-    ROOM_NOT_FOUND(HttpStatus.NOT_FOUND, "거지방이 존재하지 않습니다.")
+    ROOM_NOT_FOUND(HttpStatus.NOT_FOUND, "거지방이 존재하지 않습니다."),
+    POST_NOT_FOUND(HttpStatus.NOT_FOUND, "글이 존재하지 않습니다.")
     ;
 
 
