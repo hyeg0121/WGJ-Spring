@@ -1,6 +1,7 @@
 package com.example.wogeoji.controller;
 
 import com.example.wogeoji.dto.post.AddPostDto;
+import com.example.wogeoji.dto.post.PostResponseDto;
 import com.example.wogeoji.entity.Post;
 import com.example.wogeoji.service.PostService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,23 +24,22 @@ public class PostController {
 
     // 모든 거지방 조회
     @GetMapping
-    public List<Post> getAllPosts() {
-        return postService.findAllPosts();
+    public ResponseEntity<List<PostResponseDto>> getAllPosts() {
+        return ResponseEntity.status(HttpStatus.OK)
+                .body(postService.findAllPosts());
     }
 
     // pk로 거지방 조회
     @GetMapping("/{postId}")
-    public ResponseEntity<Post> getpostById(@PathVariable Long postId) {
-        Optional<Post> post = postService.findPostById(postId);
-        return post.map(value -> new ResponseEntity<>(value, HttpStatus.OK))
-                .orElseGet(() -> new ResponseEntity<>(HttpStatus.NOT_FOUND));
-
+    public ResponseEntity<PostResponseDto> getpostById(@PathVariable Long postId) {
+        return ResponseEntity.status(HttpStatus.OK)
+                .body(postService.findPostById(postId));
     }
 
     // 거지방 추가
     @PostMapping
-    public ResponseEntity<Post> addpost(@RequestBody AddPostDto addPostDto) {
-        Post createdpost = postService.addPost(addPostDto);
-        return new ResponseEntity<>(createdpost, HttpStatus.CREATED);
+    public ResponseEntity<PostResponseDto> addpost(@RequestBody AddPostDto addPostDto) {
+        return ResponseEntity.status(HttpStatus.CREATED)
+                .body(postService.addPost(addPostDto));
     }
 }

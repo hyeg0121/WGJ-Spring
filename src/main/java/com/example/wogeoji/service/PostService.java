@@ -1,9 +1,11 @@
 package com.example.wogeoji.service;
 
 import com.example.wogeoji.dto.post.AddPostDto;
+import com.example.wogeoji.dto.post.PostResponseDto;
 import com.example.wogeoji.entity.Post;
 import com.example.wogeoji.entity.Room;
 import com.example.wogeoji.entity.User;
+import com.example.wogeoji.exception.PostNotFoundException;
 import com.example.wogeoji.exception.RoomNotFoundException;
 import com.example.wogeoji.exception.UserNotFoundException;
 import com.example.wogeoji.repository.PostRepository;
@@ -13,7 +15,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 public class PostService {
@@ -30,17 +32,24 @@ public class PostService {
     }
 
     // 모든 게시글 조회
-    public List<Post> findAllPosts() {
-        return postRepository.findAll();
+    public List<PostResponseDto> findAllPosts() {
+        return postRepository.findAll()
+                .stream()
+                .map(PostResponseDto::from)
+                .collect(Collectors.toList());
     }
 
     // pk로 게시글 조회
-    public Optional<Post> findPostById(Long postId) {
-        return postRepository.findById(postId);
+    public PostResponseDto findPostById(Long postId) {
+        // TODO: POSTNOTFOUNDEXCEPTION 만들기
+        Post post = postRepository.findById(postId)
+                .orElseThrow(() -> PostNotFoundException.EXCEPTION);
+
+        return PostResponseDto.from(post);
     }
 
     // 게시글 추가
-    public Post addPost(AddPostDto addPostDto) {
+    public PostResponseDto addPost(AddPostDto addPostDto) {
         Room room = roomRepository.findById(addPostDto.getRoomId())
                 .orElseThrow(() -> RoomNotFoundException.EXCEPTION);
 
@@ -55,7 +64,9 @@ public class PostService {
                 .content(addPostDto.getContent())
                 .build();
 
-        return postRepository.save(post);
+        Post savedPost = postRepository.save(post);
+
+        return PostResponseDto.from(savedPost);
     }
 
 
