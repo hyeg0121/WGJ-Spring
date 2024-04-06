@@ -1,5 +1,6 @@
 package com.example.wogeoji.service;
 
+import com.example.wogeoji.dto.room.RoomResponseDto;
 import com.example.wogeoji.dto.userroom.AddUserRoomDto;
 import com.example.wogeoji.dto.userroom.UserRoomResponse;
 import com.example.wogeoji.entity.Room;
@@ -12,6 +13,9 @@ import com.example.wogeoji.repository.UserRepository;
 import com.example.wogeoji.repository.UserRoomRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class UserRoomService {
@@ -41,4 +45,11 @@ public class UserRoomService {
         return UserRoomResponse.from(savedUserRoom);
     }
 
+    public List<RoomResponseDto> findRoomByUserId(Long userId) {
+        List<Room> rooms = userRoomRepository.findRoomsByUserId(userId);
+
+        return rooms.stream()
+                .map(RoomResponseDto::from)
+                .collect(Collectors.toList());
+    }
 }
