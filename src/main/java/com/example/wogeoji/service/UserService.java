@@ -1,5 +1,6 @@
 package com.example.wogeoji.service;
 
+import com.example.wogeoji.dto.post.PostResponseDto;
 import com.example.wogeoji.dto.user.LoginUserDto;
 import com.example.wogeoji.dto.user.UserResponseDto;
 import com.example.wogeoji.entity.Post;
@@ -16,7 +17,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
-import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -75,12 +75,15 @@ public class UserService {
     }
 
     // 유저의 posts 조회
-    public List<Post> getUserPosts(Long userId) {
+    public List<PostResponseDto> getUserPosts(Long userId) {
         User user = userRepository.findById(userId)
                 .orElseThrow(() -> UserNotFoundException.EXCEPTION);
 
 
-        return user.getPosts();
+        return user.getPosts().stream()
+                .map(PostResponseDto::from)
+                .collect(Collectors.toList());
     }
+
 
 }
