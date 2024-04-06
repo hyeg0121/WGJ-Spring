@@ -33,6 +33,7 @@ public class RoomResponseDto extends BasicResponseDto {
                 .isDeleted(room.getIsDeleted())
                 .createdAt(room.getCreatedAt())
                 .updatedAt(room.getUpdatedAt())
+                .id(room.getId())
                 .name(room.getName())
                 .creator(creatorDto)
                 .description(room.getDescription())
