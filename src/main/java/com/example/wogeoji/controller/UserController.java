@@ -1,9 +1,11 @@
 package com.example.wogeoji.controller;
 
+import com.example.wogeoji.dto.post.PostResponseDto;
+import com.example.wogeoji.dto.room.RoomResponseDto;
 import com.example.wogeoji.dto.user.LoginUserDto;
 import com.example.wogeoji.dto.user.UserResponseDto;
-import com.example.wogeoji.entity.Post;
 import com.example.wogeoji.entity.User;
+import com.example.wogeoji.service.UserRoomService;
 import com.example.wogeoji.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -17,10 +19,12 @@ import java.util.List;
 public class UserController {
 
     private final UserService userService;
+    private final UserRoomService userRoomService;
 
     @Autowired
-    public UserController(UserService userService) {
+    public UserController(UserService userService, UserRoomService userRoomService) {
         this.userService = userService;
+        this.userRoomService = userRoomService;
     }
 
     // 모든 유저 조회
@@ -51,7 +55,15 @@ public class UserController {
 
     // 유저가 작성한 글 조회
     @GetMapping("/{userId}/posts")
-    public List<Post> getUsersPosts(@PathVariable Long userId) {
-        return userService.getUserPosts(userId);
+    public ResponseEntity<List<PostResponseDto>> getUsersPosts(@PathVariable Long userId) {
+        return ResponseEntity.status(HttpStatus.OK)
+                .body(userService.getUserPosts(userId));
+    }
+
+    // 유저가 가입한 방 조회하기
+    @GetMapping("/{userId}/rooms")
+    public ResponseEntity<List<RoomResponseDto>> getUsersRoom(@PathVariable Long userId) {
+        return ResponseEntity.status(HttpStatus.OK)
+                .body(userRoomService.findRoomByUserId(userId));
     }
 }
