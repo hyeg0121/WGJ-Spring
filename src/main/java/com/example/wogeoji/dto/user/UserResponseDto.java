@@ -12,17 +12,17 @@ public class UserResponseDto extends BasicResponseDto {
 
     private final Long id;
     private final String name;
+    private final String email;
     private final String bio;
-    private final String profileImagePath;
     private final Integer spentAmount;
 
     @Builder
-    public UserResponseDto(Integer isDeleted, LocalDateTime createdAt, LocalDateTime updatedAt, Long id, String name, String bio, String profileImagePath, Integer spentAmount) {
+    public UserResponseDto(Integer isDeleted, LocalDateTime createdAt, LocalDateTime updatedAt, Long id, String name, String email, String bio, Integer spentAmount) {
         super(isDeleted, createdAt, updatedAt);
         this.id = id;
         this.name = name;
+        this.email = email;
         this.bio = bio;
-        this.profileImagePath = profileImagePath;
         this.spentAmount = spentAmount;
     }
 
@@ -33,8 +33,8 @@ public class UserResponseDto extends BasicResponseDto {
                 .updatedAt(user.getUpdatedAt())
                 .id(user.getId())
                 .name(user.getName())
+                .email(user.getEmail())
                 .bio(user.getBio())
-                .profileImagePath(user.getProfileImagePath())
                 .spentAmount(user.getSpentAmount())
                 .build();
     }
