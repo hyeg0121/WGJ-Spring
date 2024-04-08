@@ -34,7 +34,9 @@ public class PostResponseDto extends BasicResponseDto {
         RoomResponseDto roomResponseDto = RoomResponseDto.from(post.getRoom());
 
         return PostResponseDto.builder()
+                .isDeleted(post.getIsDeleted())
                 .createdAt(post.getCreatedAt())
+                .updatedAt(post.getUpdatedAt())
                 .id(post.getId())
                 .author(userResponseDto)
                 .room(roomResponseDto)
