@@ -18,11 +18,13 @@ import java.time.LocalDateTime;
 @EntityListeners(AuditingEntityListener.class)
 public abstract class BaseEntity {
     @Column(nullable = false, columnDefinition = "TINYINT DEFAULT 0")
-    private Integer isDeleted = 0;
+    protected Integer isDeleted = 0;
 
     @CreatedDate
     private LocalDateTime createdAt;
 
     @LastModifiedDate
     private LocalDateTime updatedAt;
+
+    public abstract void delete();
 }
