@@ -33,7 +33,7 @@ public class PostService {
 
     // 모든 게시글 조회
     public List<PostResponseDto> findAllPosts() {
-        return postRepository.findAll()
+        return postRepository.findByIsDeletedEquals(0)
                 .stream()
                 .map(PostResponseDto::from)
                 .collect(Collectors.toList());
@@ -41,8 +41,7 @@ public class PostService {
 
     // pk로 게시글 조회
     public PostResponseDto findPostById(Long postId) {
-        // TODO: POSTNOTFOUNDEXCEPTION 만들기
-        Post post = postRepository.findById(postId)
+        Post post = postRepository.findByIdAndIsDeleted(postId, 0)
                 .orElseThrow(() -> PostNotFoundException.EXCEPTION);
 
         return PostResponseDto.from(post);
@@ -70,7 +69,12 @@ public class PostService {
     }
 
 
+    // 유저 삭제
     public void deletePost(Long postId) {
-        postRepository.deleteById(postId);
+        Post post = postRepository.findById(postId)
+                .orElseThrow(() -> PostNotFoundException.EXCEPTION);
+
+        post.delete();
     }
+
 }
