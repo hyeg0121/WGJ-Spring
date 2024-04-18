@@ -32,16 +32,19 @@ public class RoomService {
 
     // 모든 거지방 조회
     public List<RoomResponseDto> findAllRooms() {
-        return roomRepository.findAll()
+
+        return  roomRepository.findByIsDeletedEquals(0)
                 .stream()
+                .filter(room -> 0 == room.getIsDeleted())
                 .map(RoomResponseDto::from)
                 .collect(Collectors.toList());
     }
 
     // pk로 거지방 조회
     public RoomResponseDto findRoomById(Long roomId) {
-        Room room = roomRepository.findById(roomId)
+        Room room = roomRepository.findByIdAndIsDeleted(roomId, 0)
                 .orElseThrow(() -> RoomNotFoundException.EXCEPTION);
+
 
         return RoomResponseDto.from(room);
     }
@@ -72,5 +75,15 @@ public class RoomService {
                 .room(room)
                 .build());
     }
+
+    // 거지방 삭제
+    public void deleteRoom(Long roomId) {
+        Room room = roomRepository.findById(roomId)
+                .orElseThrow(() -> RoomNotFoundException.EXCEPTION);
+
+        room.delete();
+        roomRepository.save(room);
+    }
+
 
 }

@@ -14,6 +14,7 @@ import java.util.Optional;
 
 @RestController
 @RequestMapping("/api/rooms")
+@CrossOrigin(origins = "http://localhost:3000", allowedHeaders = "*")
 public class RoomController {
     private final RoomService roomService;
 
@@ -43,5 +44,11 @@ public class RoomController {
 
         return ResponseEntity.status(HttpStatus.CREATED)
                 .body(createdRoom);
+    }
+
+    @DeleteMapping("/{roomId}")
+    public ResponseEntity<Void> deleteUser(@PathVariable Long roomId) {
+        roomService.deleteRoom(roomId);
+        return ResponseEntity.noContent().build();
     }
 }

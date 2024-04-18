@@ -27,4 +27,9 @@ public class Room extends BaseEntity {
     private String description;
 
     private Integer capacity;
+
+    @Override
+    public void delete() {
+        this.isDeleted = 1;
+    }
 }
