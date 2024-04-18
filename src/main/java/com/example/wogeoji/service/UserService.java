@@ -34,15 +34,17 @@ public class UserService {
 
     // 모든 유저 조회
     public List<UserResponseDto> findAllUser() {
-        return userRepository.findAll()
+
+        return userRepository.findByIsDeletedEquals(0)
                 .stream()
+                .filter(user -> 0 == user.getIsDeleted())
                 .map(UserResponseDto::from)
                 .collect(Collectors.toList());
     }
 
     // pk로 유저 조회
     public UserResponseDto findUserById(Long userId) {
-        User user = userRepository.findById(userId)
+        User user = userRepository.findByIdAndIsDeleted(userId, 0)
                 .orElseThrow(() -> UserNotFoundException.EXCEPTION);
 
         return UserResponseDto.from(user);
@@ -62,7 +64,7 @@ public class UserService {
     }
 
     // 유저 로그인
-    public User login(LoginUserDto loginUserDto) {
+    public UserResponseDto login(LoginUserDto loginUserDto) {
         boolean isValid = false;
         User loggedUser = userRepository.findByEmail(loginUserDto.getEmail());
 
@@ -70,7 +72,7 @@ public class UserService {
         else throw EmailNotFoundException.EXCEPTION;
 
 
-        if (isValid) return loggedUser;
+        if (isValid) return UserResponseDto.from(loggedUser);
         else throw IncorrectPasswordException.EXCEPTION;
     }
 
@@ -81,8 +83,17 @@ public class UserService {
 
 
         return user.getPosts().stream()
+                .filter(post -> post.getIsDeleted() == 0)
                 .map(PostResponseDto::from)
                 .collect(Collectors.toList());
+    }
+
+    // 유저 삭제
+    public void deleteUser(Long userId) {
+        User user = userRepository.findById(userId)
+                .orElseThrow(() -> UserNotFoundException.EXCEPTION);
+
+        user.delete();
     }
 
 

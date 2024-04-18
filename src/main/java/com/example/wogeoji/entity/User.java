@@ -35,4 +35,9 @@ public class User extends BaseEntity {
 
     @OneToMany(mappedBy = "author")
     private List<Post> posts = new ArrayList<>();
+
+    @Override
+    public void delete() {
+        this.isDeleted = 1;
+    }
 }

@@ -16,7 +16,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/api/users")
-@CrossOrigin(origins = "*", allowedHeaders = "*")
+@CrossOrigin(origins = "http://localhost:3000", allowedHeaders = "*")
 public class UserController {
 
     private final UserService userService;
@@ -49,7 +49,7 @@ public class UserController {
 
     // 유저 로그인
     @PostMapping("/login")
-    public ResponseEntity<User> login(@RequestBody LoginUserDto loginUserDto) {
+    public ResponseEntity<UserResponseDto> login(@RequestBody LoginUserDto loginUserDto) {
         return ResponseEntity.status(HttpStatus.OK)
                 .body(userService.login(loginUserDto));
     }
@@ -66,5 +66,11 @@ public class UserController {
     public ResponseEntity<List<RoomResponseDto>> getUsersRoom(@PathVariable Long userId) {
         return ResponseEntity.status(HttpStatus.OK)
                 .body(userRoomService.findRoomByUserId(userId));
+    }
+
+    @DeleteMapping("/{userId}")
+    public ResponseEntity<Void> deleteUser(@PathVariable Long userId) {
+        userService.deleteUser(userId);
+        return ResponseEntity.noContent().build();
     }
 }
