@@ -14,6 +14,7 @@ import java.util.Optional;
 
 @RestController
 @RequestMapping("/api/posts")
+@CrossOrigin(origins = "http://localhost:3000", allowedHeaders = "*")
 public class PostController {
     private final PostService postService;
 
@@ -41,5 +42,11 @@ public class PostController {
     public ResponseEntity<PostResponseDto> addpost(@RequestBody AddPostDto addPostDto) {
         return ResponseEntity.status(HttpStatus.CREATED)
                 .body(postService.addPost(addPostDto));
+    }
+
+    @DeleteMapping("/{postId}")
+    public ResponseEntity<Void> deleteUser(@PathVariable Long postId) {
+        postService.deletePost(postId);
+        return ResponseEntity.noContent().build();
     }
 }

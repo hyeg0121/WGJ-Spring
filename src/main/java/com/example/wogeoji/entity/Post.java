@@ -38,4 +38,9 @@ public class Post extends BaseEntity {
 
     @Column(nullable = false)
     private String content;
+
+    @Override
+    public void delete() {
+        this.isDeleted = 1;
+    }
 }
